@@ -71,46 +71,55 @@ class BurgerBuilder extends Component {
 
     purchaseContinueHandler =() =>{
        // alert('you continue!');
-       this.setState({loading: true});   
-       const order ={        
-           ingredients : this.state.ingredients,
-           price : this.state.price,
-           customer :{
-                name: 'ansari',
-                address : {
-                    street : 'New Bazar Street',
-                    pincode : '628204',
-                    country : 'india'
-                },
-                email : 'mdansariibrahim1@gmail.com',
-            },
-            deliveryMethod : 'fastest'
-       }    
-       axios.post('/order.json', order)
-       .then(response =>{ 
-        this.setState({loading: false, purchasing: false});
-        })
+    //    this.setState({loading: true});   
+    //    const order ={        
+    //        ingredients : this.state.ingredients,
+    //        price : this.state.price,
+    //        customer :{
+    //             name: 'ansari',
+    //             address : {
+    //                 street : 'New Bazar Street',
+    //                 pincode : '628204',
+    //                 country : 'india'
+    //             },
+    //             email : 'mdansariibrahim1@gmail.com',
+    //         },
+    //         deliveryMethod : 'fastest'
+    //    }    
+    //    axios.post('/order.json', order)
+    //    .then(response =>{ 
+    //     this.setState({loading: false, purchasing: false});
+    //     })
 
-       .catch(error => {
-           this.setState({loading: false, purchasing: false});
-       });
+    //    .catch(error => {
+    //        this.setState({loading: false, purchasing: false});
+    //    });
+    // }
+    // removeIngredientHandler =(type) =>{
+
+    //     const oldCount = this.state.ingredients[type];
+    //     if(oldCount<=0){
+    //         return;
+    //     }
+    //     const updatedCount = oldCount - 1 ;
+    //     const updatedIngredients ={
+    //         ...this.state.ingredients
+    //     };
+    //     updatedIngredients[type] =updatedCount;
+    //     const priceDeduction = INGREDIENT_PRICES[type];
+    //     const oldPrice = this.state.totalPrice;
+    //     const newPrice = oldPrice - priceDeduction;
+    //     this.setState({totalPrice : newPrice, ingredients: updatedIngredients});
+    //     this.updatePurchaseState(updatedIngredients);
+    const queryParams= [];
+    for(let i in this.state.ingredients){
+        queryParams.push(encodeURIComponent(i) + '=' + encodeURIComponent(this.state.ingredients[i]));
     }
-    removeIngredientHandler =(type) =>{
-
-        const oldCount = this.state.ingredients[type];
-        if(oldCount<=0){
-            return;
-        }
-        const updatedCount = oldCount - 1 ;
-        const updatedIngredients ={
-            ...this.state.ingredients
-        };
-        updatedIngredients[type] =updatedCount;
-        const priceDeduction = INGREDIENT_PRICES[type];
-        const oldPrice = this.state.totalPrice;
-        const newPrice = oldPrice - priceDeduction;
-        this.setState({totalPrice : newPrice, ingredients: updatedIngredients});
-        this.updatePurchaseState(updatedIngredients);
+    const queryString = queryParams.join('&');
+    this.props.history.push({
+        pathname: '/checkout',
+        search : '?' + queryString
+    })
     };
 
     render () {
