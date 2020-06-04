@@ -33,3 +33,9 @@ export const purchaseBurger = (orderData) => {
         } );
     }
 }
+
+export const purchaseInit = () => {
+    return {
+        tyoe: actionTypes.PURCHASE_INIT
+    }
+}
